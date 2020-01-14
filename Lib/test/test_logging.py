@@ -599,14 +599,14 @@ class HandlerTest(BaseTest):
         os.unlink(fn)
         pfn = pathlib.Path(fn)
         cases = (
-                    (logging.FileHandler, (pfn, 'w')),
-                    (logging.handlers.RotatingFileHandler, (pfn, 'a')),
-                    (logging.handlers.TimedRotatingFileHandler, (pfn, 'h')),
+                    (logging.FileHandler, (pfn), {'when': 'w'}),
+                    (logging.handlers.RotatingFileHandler, (pfn), {'when': 'a'}),
+                    (logging.handlers.TimedRotatingFileHandler, (pfn), {'when': 'h'}),
                 )
         if sys.platform in ('linux', 'darwin'):
             cases += ((logging.handlers.WatchedFileHandler, (pfn, 'w')),)
-        for cls, args in cases:
-            h = cls(*args)
+        for cls, args, kwargs in cases:
+            h = cls(*args, **kwargs)
             self.assertTrue(os.path.exists(fn))
             h.close()
             os.unlink(fn)
@@ -4295,7 +4295,7 @@ class RotatingFileHandlerTest(BaseFileTest):
 class TimedRotatingFileHandlerTest(BaseFileTest):
     # other test methods added below
     def test_rollover(self):
-        fh = logging.handlers.TimedRotatingFileHandler(self.fn, 'S',
+        fh = logging.handlers.TimedRotatingFileHandler(self.fn, when='S',
                                                        backupCount=1)
         fmt = logging.Formatter('%(asctime)s %(message)s')
         fh.setFormatter(fmt)

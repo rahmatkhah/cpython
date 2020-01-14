@@ -318,12 +318,14 @@ The :class:`TimedRotatingFileHandler` class, located in the
 timed intervals.
 
 
-.. class:: TimedRotatingFileHandler(filename, when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False, atTime=None)
+.. class:: TimedRotatingFileHandler(filename, mode='a', when='h', interval=1, backupCount=0, encoding=None, delay=False, utc=False, atTime=None, terminator=None)
 
    Returns a new instance of the :class:`TimedRotatingFileHandler` class. The
    specified file is opened and used as the stream for logging. On rotating it also
    sets the filename suffix. Rotating happens based on the product of *when* and
    *interval*.
+
+   If *mode* is not specified, :const:`'a'` is used.
 
    You can use the *when* to specify the type of *interval*. The list of possible
    values is below.  Note that they are not case sensitive.
@@ -378,6 +380,8 @@ timed intervals.
    rollover, and subsequent rollovers would be calculated via the normal
    interval calculation.
 
+   The default line *terminator* of any FileHandler is '\n'.
+   
    .. note:: Calculation of the initial rollover time is done when the handler
       is initialised. Calculation of subsequent rollover times is done only
       when rollover occurs, and rollover occurs only when emitting output. If
